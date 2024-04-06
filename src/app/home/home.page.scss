@@ -1,0 +1,16 @@
+.custom-button {
+    --background-color: rgba(0, 0, 0, 0.168); 
+    border-radius: 8px;
+    border: 1px solid var(--ion-color-primary-contrast);
+    margin-bottom: 10px; 
+}
+
+.header-no-border {
+    --border-width: 0; /* Elimina los bordes */
+    --min-height: 0; /* Elimina el espacio en blanco en la parte superior del header */
+}
+
+.header-title {
+text-align: center; /* Centra el texto del título */
+}
+  

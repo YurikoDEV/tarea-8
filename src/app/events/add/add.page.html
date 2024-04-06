@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>add</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <!--TITULO-->
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input [(ngModel)]="title" type="text"></ion-input>
+    </ion-item>
+  
+    <!--DESCRIPCION-->
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="description"></ion-textarea>
+    </ion-item>
+
+    <!--FECHA-->
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-input type="date" [(ngModel)]="date"></ion-input>
+    </ion-item>
+
+    <!--UBICACION-->
+    <ion-item>
+      <ion-label position="floating">Ubicación</ion-label>
+      <ion-input [(ngModel)]="location" type="text"></ion-input>
+    </ion-item>
+
+    <!--SELECCIONAR IMG-->
+    <ion-item class="form-group">
+      <ion-label position="stacked">Foto</ion-label>
+      <ion-input type="file" name="foto" accept="image/*"></ion-input>
+    </ion-item>
+
+    <!--GRABAR AUDIO-->
+    <ion-buttons>
+      <ion-button (click)="startRecording()" expand="block" color="primary" [disabled]="recording">
+        Iniciar Grabación
+      </ion-button>
+    
+      <ion-button (click)="stopRecording()" expand="block" color="danger" [disabled]="!recording">
+        Detener Grabación
+      </ion-button>
+    </ion-buttons>
+      
+    <ion-label>Duración de la grabación (segundos):</ion-label>
+    <ion-badge slot="end">{{ recordingDuration }}</ion-badge>
+
+    <ion-button expand="block" (click)="add()" type="submit">Guardar</ion-button>
+</ion-content>

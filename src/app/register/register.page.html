@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Registro</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list lines="full">
+        <ion-item>
+          <ion-label>Partido Político</ion-label>
+          <ion-select [(ngModel)]="partidoSeleccionado" (ionChange)="cambiarTema()">
+            <ion-select-option value="prm">Partido 1</ion-select-option>
+            <ion-select-option value="pld">Partido 2</ion-select-option>
+            <ion-select-option value="fuerza-del-pueblo">Partido 3</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+
+    <ion-footer>
+      <ion-button expand="block" color="primary" (click)="registrarse()">Registrarse</ion-button>
+    </ion-footer>
+  </ion-card>
+</ion-content>
