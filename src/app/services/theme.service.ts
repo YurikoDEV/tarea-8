@@ -7,9 +7,12 @@ export class ThemeService {
   constructor() { }
 
   setTheme(themeName: string) {
+    console.log('entra',themeName)
+
     // Aquí establecemos las variables CSS según el tema seleccionado
     switch (themeName) {
       case 'prm':
+        console.log('entra')
         document.documentElement.style.setProperty('--ion-color-primary', '#3880ff');
         document.documentElement.style.setProperty('--ion-color-primary-contrast', '#ffffff');
         break;
@@ -17,7 +20,7 @@ export class ThemeService {
         document.documentElement.style.setProperty('--ion-color-primary', '#800080');
         document.documentElement.style.setProperty('--ion-color-primary-contrast', '#FFFF00');
         break;
-      case 'fuerza-del-pueblo':
+      case 'fp':
         document.documentElement.style.setProperty('--ion-color-primary', '#006400');
         document.documentElement.style.setProperty('--ion-color-primary-contrast', '#ffffff');
         break;

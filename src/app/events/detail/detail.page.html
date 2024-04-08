@@ -1,13 +1,45 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>detail</ion-title>
+    <ion-title>{{ event.titulo }}</ion-title>
+    <ion-buttons (click)="back()" slot="end"><ion-icon size="large" name="arrow-back"></ion-icon></ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <!-- TITULO -->
+  <ion-item>
+    <ion-label>Título</ion-label>
+    <ion-text>{{ event.titulo }}</ion-text>
+  </ion-item>
+  
+  <!-- DESCRIPCION -->
+  <ion-item>
+    <ion-label>Descripción</ion-label>
+    <ion-text>{{ event.descripcion }}</ion-text>
+  </ion-item>
+
+  <!-- FECHA -->
+  <ion-item>
+    <ion-label>Fecha</ion-label>
+    <ion-text>{{ event.date | date:'dd/MM/yyyy' }}</ion-text>
+  </ion-item>
+
+  <!-- UBICACION -->
+  <ion-item>
+    <ion-label>Ubicación</ion-label>
+    <ion-text>{{ event.location }}</ion-text>
+  </ion-item>
+
+  <!-- IMAGEN -->
+  <ion-item *ngIf="imgUrl">
+    <ion-label>Foto</ion-label>
+      <ion-img [src]="imgUrl" alt="imagen del caso"> </ion-img>
+  </ion-item>
+
+  <!-- AUDIO -->
+  <ion-item>
+    <ion-label>Grabación de Audio</ion-label>
+    <ion-button (click)="playFile()"><ion-icon size="large" name="play"></ion-icon></ion-button>
+  </ion-item>
+
 </ion-content>

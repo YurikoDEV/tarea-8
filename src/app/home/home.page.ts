@@ -9,10 +9,12 @@ import { DatabaseService } from '../database.service';
 })
 export class HomePage implements OnInit {
 
-  constructor(private router: Router, public database:DatabaseService) {}
+  constructor(private router: Router, public database:DatabaseService) {
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.database.createDatabase();
+
   }
 
   // Función para navegar a la página de registro

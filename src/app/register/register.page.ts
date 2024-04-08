@@ -9,15 +9,15 @@ import { Router } from '@angular/router';
 })
 export class RegisterPage implements OnInit {
 
-  partidoSeleccionado!: string;
-
+  theme!:string;
   constructor(private themeService: ThemeService, public route: Router) { }
 
   ngOnInit() {
   }
 
-  cambiarTema() {
-    this.themeService.setTheme(this.partidoSeleccionado);
+  cambiarTema(partidoSeleccionado:string) {
+    this.theme = partidoSeleccionado;
+    this.themeService.setTheme(partidoSeleccionado);
   }
 
   registrarse() {

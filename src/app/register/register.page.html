@@ -1,30 +1,29 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Registro</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Registro</ion-card-title>
+      <ion-card-title>Seleccione su partido</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list lines="full">
-        <ion-item>
-          <ion-label>Partido Político</ion-label>
-          <ion-select [(ngModel)]="partidoSeleccionado" (ionChange)="cambiarTema()">
-            <ion-select-option value="prm">Partido 1</ion-select-option>
-            <ion-select-option value="pld">Partido 2</ion-select-option>
-            <ion-select-option value="fuerza-del-pueblo">Partido 3</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
+        <ion-row class="box-logos">
+
+          <ion-button class="logo" fill="clear" (click)="cambiarTema('prm')">
+            <img src="assets/media/img/prm.png" class="logo-img" alt="Prm">
+          </ion-button>
+
+          <ion-button class="logo" fill="clear" (click)="cambiarTema('pld')">
+            <img src="assets/media/img/pld.png" class="logo-img" alt="Pld">
+          </ion-button>
+
+          <ion-button class="logo" fill="clear" (click)="cambiarTema('fp')">
+            <img src="assets/media/img/fp.png" class="logo-img" alt="fp">
+          </ion-button>
+          
+        </ion-row>
     </ion-card-content>
 
     <ion-footer>
-      <ion-button expand="block" color="primary" (click)="registrarse()">Registrarse</ion-button>
+      <ion-button expand="block" color="primary" [disabled]="theme == ''" (click)="registrarse()">Seleccionar</ion-button>
     </ion-footer>
   </ion-card>
 </ion-content>

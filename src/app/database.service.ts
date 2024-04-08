@@ -11,7 +11,8 @@ export class DatabaseService {
   constructor(private sqlite: SQLite) { 
   }
 
-  async createDatabase(){
+  //CREAR BASE DE DATOS -si no existe registros
+  async createDatabase() {
     await this.sqlite.create({
       name:'registros',
       location:'default',
@@ -22,83 +23,44 @@ export class DatabaseService {
       alert('Error al crear la base de datos');
 
     });
-
     await this.createTableEvents();
-  }
-
-  async createTableEvents() {
-    try {
-      await this.sqliteObj.executeSql(`
-        CREATE TABLE IF NOT EXISTS eventos (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          titulo TEXT NOT NULL,
-          descripcion TEXT,
-          img TEXT,
-          created_at DATETIME,
-          updated_at DATETIME,
-          location TEXT,
-          audio TEXT
-        )
-      `);
-      console.log('Tabla de eventos creada correctamente');
-    } catch (error) {
-      console.error('Error al crear la tabla de eventos:', error);
-    }
-  }
-  
-
-  async createTableUsers(){
-    await this.sqliteObj.executeSql(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT NOT NULL,
-      password TEXT NOT NULL,
-      matricula TEXT,
-      correo TEXT,
-      created_at datetime,
-      location TEXT,
-      partido TEXT NOT NULL,
-    )
-
-    `)
-  }
-
-  async addEvents(title: string, description: string, created_at: string, location: string): Promise<number> {
-    try {
-        const result = await this.sqliteObj.executeSql(`
-            INSERT INTO eventos (title, description, created_at, location) 
-            VALUES (?,?,?,?)
-        `, [title, description, created_at, location]);
-
-        console.log('Datos ingresados correctamente');
-
-        // Obtener el ID generado por la inserción
-        const generatedId = result.insertId;
-
-        return generatedId;
-    } catch (e) {
-        console.log('Error al ingresar los datos> ' + e);
-        throw e; // Re-lanzar el error para que sea manejado fuera de esta función si es necesario
-    }
 }
 
+  async createTableEvents() {
+    await this.sqliteObj.executeSql(`
+      CREATE TABLE IF NOT EXISTS cases (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT NOT NULL,
+        descripcion TEXT,
+        created_at DATETIME,
+        date DATETIME,
+        location TEXT
+      )
+    `);
+  }
 
-  async addUser(username:string, password:string, matricula:string, correo:string, created_at:string, location:string, partido:string){
+  //AGREAGAR UN CASO  
+  async addEvents(title: string, description: string, created_at: string, location: string, date: string){
     try{
-      await this.sqliteObj.executeSql(`
-        INSERT INTO eventos (username, password, matricula, correo, created_at, location,partido) 
-        VALUES (?,?,?,?,?,?,?)
-      `,[username, password, matricula, correo, created_at, location,partido]);
-      console.log('Usuario registrado correctamente');
+      const result = await this.sqliteObj.executeSql(`
+        INSERT INTO cases (titulo, descripcion, created_at, location, date) 
+        VALUES (?, ?, ?,?,?)
+      `, [title, description, created_at, location, date]);
+      console.log('Datos ingresados correctamente');
+      const generatedId = result.insertId;
+      console.log(generatedId);
+      return generatedId;
+
     }catch(e){
-      console.log('Error al ingresar los datos> ' + e);
+      console.log('Error al ingresar los datos:', e);
     }
   }
 
+  //LISTA DE CASOS  
   async getEvents(){
     try{
       const query = await this.sqliteObj.executeSql(`
-       SELECT * FROM eventos;
+       SELECT * FROM cases;
       `,[]);
 
       const events = [];
@@ -116,55 +78,64 @@ export class DatabaseService {
     }
   }
 
-  async loginUser(username: string, password: string) {
+  //Eliminar un caso
+  async deleteEvent(id: number) {
     try {
-
       const query = `
-        SELECT * FROM users 
-        WHERE username = ? AND password = SHA1(?)
-      `;
-      const queryParams = [username, password];
-
-      const result = await this.sqliteObj.executeSql(query, queryParams);
-
-      if (result.rows.length > 0) {
-        // Usuario autenticado correctamente
-        const user = result.rows.item(0);
-        
-        // Guardar los datos del usuario en el localStorage
-        localStorage.setItem('currentUser', JSON.stringify(user));
-
-        console.log('Usuario autenticado correctamente');
-        return user;
-      } else {
-        // Usuario no encontrado o contraseña incorrecta
-        console.log('Usuario no encontrado o contraseña incorrecta');
-        return null;
-      }
-    } catch (error) {
-      console.error('Error al autenticar usuario:', error);
-      return null;
-    }
-  }
-
-  async editEvent(id: number, title: string, description: string, created_at: string, location: string, img: string, audio: string) {
-    try {
-
-      const query = `
-        UPDATE eventos 
-        SET title = ?, description = ?, created_at = ?, location = ?, img = ?, audio = ?
+        DELETE FROM cases
         WHERE id = ?
       `;
-      const queryParams = [title, description, created_at, location, img, audio, id];
-
+      const queryParams = [id];
+  
       await this.sqliteObj.executeSql(query, queryParams);
       
-      console.log('Evento editado correctamente');
+      console.log('Evento eliminado correctamente');
       return true;
     } catch (error) {
-      console.error('Error al editar el evento:', error);
+      console.error('Error al eliminar el evento:', error);
       return false;
     }
   }
 
+  //Eliminar tabla
+  async deleteTable() {
+    try {
+      const query = `DROP TABLE IF EXISTS cases`;
+  
+      await this.sqliteObj.executeSql(query, []);
+      
+      console.log('Tabla eliminada correctamente');
+      return true;
+    } catch (error) {
+      console.error('Error al eliminar la tabla:', error);
+      return false;
+    }
+  }
+
+  //OBTENER DETALLDE DE UN CASO
+  async getCaseById(id: number) {
+    try {
+      const query = `
+        SELECT * 
+        FROM cases
+        WHERE id = ?
+      `;
+      const queryParams = [id];
+  
+      const result = await this.sqliteObj.executeSql(query, queryParams);
+      
+      if (result.rows.length > 0) {
+        const event = result.rows.item(0);
+        console.log('Caso obtenido correctamente:', event);
+        return event;
+      } else {
+        console.log('No se encontró ningún caso con el ID:', id);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al obtener el caso por ID:', error);
+      return null;
+    }
+  }
+  
 }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add</ion-title>
+    <ion-title>{{isEditing ? 'Editar caso' : 'Registrar caso'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -32,22 +32,29 @@
     <!--SELECCIONAR IMG-->
     <ion-item class="form-group">
       <ion-label position="stacked">Foto</ion-label>
-      <ion-input type="file" name="foto" accept="image/*"></ion-input>
+      <ion-input type="file" name="foto" accept="image/*" [(ngModel)]="selectedImage"></ion-input>
     </ion-item>
 
     <!--GRABAR AUDIO-->
-    <ion-buttons>
-      <ion-button (click)="startRecording()" expand="block" color="primary" [disabled]="recording">
-        Iniciar Grabación
-      </ion-button>
-    
-      <ion-button (click)="stopRecording()" expand="block" color="danger" [disabled]="!recording">
-        Detener Grabación
-      </ion-button>
-    </ion-buttons>
+    <ion-item>
+      <ion-col>
+        <ion-buttons>
+          <ion-button (click)="startRecording()" expand="block" color="primary" [disabled]="recording">
+            <ion-icon name="mic-outline"></ion-icon>
+            Iniciar Grabación
+          </ion-button>
+        
+          <ion-button (click)="stopRecording()" expand="block" color="danger" [disabled]="!recording">
+            <ion-icon name="mic-off-outline"></ion-icon>
+            Detener Grabación
+          </ion-button>
+        </ion-buttons>
+          
+        <ion-label>Duración de la grabación (segundos):  <ion-badge slot="end">{{ recordingDuration }}</ion-badge> </ion-label>
+      </ion-col>
       
-    <ion-label>Duración de la grabación (segundos):</ion-label>
-    <ion-badge slot="end">{{ recordingDuration }}</ion-badge>
+    </ion-item>
+
 
     <ion-button expand="block" (click)="add()" type="submit">Guardar</ion-button>
 </ion-content>
